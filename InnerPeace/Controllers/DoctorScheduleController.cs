@@ -58,6 +58,15 @@ public class DoctorScheduleController(ApplicationDbContext context) : Controller
 
         doctor.SessionSettings.IsAvailable = true;
 
+        // Handle initial null values for DurationPrice
+        doctor.SessionSettings.DurationPrice ??= new Dictionary<int, double>();
+        if (!doctor.SessionSettings.DurationPrice.ContainsKey(30))
+        {
+            doctor.SessionSettings.DurationPrice.Add(30, 0);
+            doctor.SessionSettings.DurationPrice.Add(60, 0);
+            doctor.SessionSettings.DurationPrice.Add(90, 0);
+        }
+
         // Retrieve the existing availability time for the specified day or create a new one
         var time = doctor.SessionSettings.AvailabilityTimes.FirstOrDefault(s => s.Day == day);
 
