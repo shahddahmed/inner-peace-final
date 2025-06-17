@@ -1,0 +1,221 @@
+﻿@using System.Text
+@using InnerPeace.Entities
+@model InnerPeace.Entities.Doctor
+
+@{
+  ViewData["Title"] = "Therapist Profile";
+  var comments = Model.Ratings.Where(r => !string.IsNullOrEmpty(r.Comment)).ToList();
+}
+
+<div class="profile-card">
+  <div class="interests-section">
+    <h2>Specialization</h2>
+    <div class="tags">
+      @foreach (var specialization in Model.DoctorSpecializations.Select(d => d.Specialization))
+      {
+        <span>@specialization.Name</span>
+      }
+    </div>
+  </div>
+
+  <div class="therapist-info">
+    <img src="@Model.ImagePath" alt="@Model.Name" style="width: 80px;height: 80px;border-radius: 50%;"/>
+    <h3>@Model.Name</h3>
+    <p class="specialty">@Model.ProfessionTitle</p>
+    <p class="rating">@RenderStarsFromRatings(Model.Ratings.ToList()) 
+      <a href="#review">@CalculateAverageFromRatings(Model.Ratings.ToList()) (@Model.Ratings.Count Reviews)</a></p>
+    <ul class="info-list">
+      <li><strong>Language:</strong> @string.Join(", ", Model.DoctorLanguages.Select(d => d.Language.Name))</li>
+      <li><strong>Country:</strong> @Model.DoctorCountries.Select(d => d.Country.Name).FirstOrDefault()</li>
+      <li><strong>Joining Date:</strong> @GetTimeAgo(Model.CreatedAt)</li>
+      <li><strong>Number of sessions:</strong> @(Model.Sessions?.Count ?? 0) Sessions</li>
+      @{
+        var durationStrings = string.Join(" | ",
+          Model.SessionSettings?.DurationPrice
+            .OrderBy(kv => kv.Value)
+            .Select(kv => $"{kv.Value} EGP / {kv.Key} Minutes") ?? []
+        );
+      }
+      <li><strong>Fees:</strong> @durationStrings</li>
+    </ul>
+    <div class="buttons">
+      @if ((User.Identity?.IsAuthenticated ?? false) && (Model.SessionSettings?.IsAvailable ?? false))
+      {
+        <button class="slot-btn"
+                onclick="location.href='@Url.Action("Index", "Booking", new { id = Model.Id })'">
+          Book Now
+        </button>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- Education Section -->
+<div class="education-section">
+  <h2>Education</h2>
+  @foreach (var education in Model.Educations)
+  {
+    <div class="edu-item">
+      <p class="degree">@education.EducationDegree.Degree</p>
+      <p class="university">@education.University</p>
+      <p class="duration">
+        @education.StartDate.ToString("MMM yyyy") - @education.EndDate.ToString("MMM yyyy")
+      </p>
+    </div>
+  }
+</div>
+
+@{
+  var ratings = Model.Ratings.ToList();
+  var total = ratings.Count;
+
+  double GetAverage(Func<Rating, int> selector) =>
+    total > 0 ? ratings.Select(selector).Average() : 0;
+
+  var categories = new[]
+  {
+    new { Name = "Communication", Value = GetAverage(r => (int)r.Communication) },
+    new { Name = "Understanding of the situation", Value = GetAverage(r => (int)r.UnderstandingOfTheSituation) },
+    new { Name = "Providing effective solutions", Value = GetAverage(r => (int)r.ProvidingEffectiveSolution) },
+    new { Name = "Commitment to start and end times", Value = GetAverage(r => (int)r.CommitmentToStartAndEndTimes) }
+  };
+}
+
+<!-- Ratings Section -->
+<div class="reviews" id="review">
+  <div class="overall-rating">
+    <p>
+      @RenderStarsFromRatings(ratings)
+      <strong>@CalculateAverageFromRatings(ratings)</strong>
+      (@total Reviews)
+    </p>
+  </div>
+
+  <div class="review-bars">
+    @foreach (var cat in categories)
+    {
+      var percentage = (cat.Value / 5.0) * 100;
+      <p>@cat.Name</p>
+      <div class="bar">
+        <div style="width: @percentage%"></div>
+        <span>@cat.Value.ToString("0.##")</span>
+      </div>
+    }
+  </div>
+</div>
+
+@if (comments.Any())
+{
+  <div class="review-card">
+    <div class="reviews-slider-wrapper">
+      <div class="reviews-slider" id="reviewsSlider">
+        @foreach (var rating in comments)
+        {
+          <div class="review-item">
+            <div class="quote">“</div>
+            <p class="review-text">@rating.Comment</p>
+            <div class="review-footer">
+              <span class="reviewer">@rating.User.Name</span>
+              <span class="stars">@RenderStars(rating)</span>
+              <span class="date">@GetTimeAgo(rating.CreatedAt)</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="review-dots" id="reviewDots">
+      @for (int i = 0; i < comments.Count; i++)
+      {
+        <span class="dot @(i == 0 ? "active" : "")"></span>
+      }
+    </div>
+  </div>
+}
+
+<script>
+  const slider = document.getElementById('reviewsSlider');
+  const dots = document.querySelectorAll('#reviewDots .dot');
+  const reviews = slider?.children || [];
+  let currentIndex = 0;
+
+  function showSlide(index) {
+    const slideWidth = slider.clientWidth;
+    slider.style.transform = `translateX(-${index * slideWidth}px)`;
+    dots.forEach(dot => dot.classList.remove('active'));
+    if (dots[index]) dots[index].classList.add('active');
+  }
+
+  if (dots.length > 1) {
+    setInterval(() => {
+      currentIndex = (currentIndex + 1) % dots.length;
+      showSlide(currentIndex);
+    }, 4000);
+  }
+</script>
+
+<style>
+  .reviews-slider {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    overflow: hidden;
+  }
+  .review-item {
+    flex: 0 0 100%;
+    box-sizing: border-box;
+  }
+</style>
+
+@functions {
+  private string RenderStars(InnerPeace.Entities.Rating rating)
+  {
+    var ratings = new[]
+    {
+      (int)rating.Communication,
+      (int)rating.UnderstandingOfTheSituation,
+      (int)rating.ProvidingEffectiveSolution,
+      (int)rating.CommitmentToStartAndEndTimes
+    };
+
+    var avg = (int)Math.Round(ratings.Average());
+    return new string('★', avg).PadRight(5, '☆');
+  }
+
+  private List<int> GetRatingValues(InnerPeace.Entities.Rating rating)
+  {
+    return
+    [
+      (int)rating.Communication,
+      (int)rating.UnderstandingOfTheSituation,
+      (int)rating.ProvidingEffectiveSolution,
+      (int)rating.CommitmentToStartAndEndTimes
+    ];
+  }
+
+  private double CalculateAverageFromRatings(List<InnerPeace.Entities.Rating> ratings)
+  {
+    var allValues = ratings.SelectMany(GetRatingValues).ToList();
+    return allValues.Any() ? allValues.Average() : 0;
+  }
+
+  private string RenderStarsFromRatings(List<InnerPeace.Entities.Rating> ratings)
+  {
+    var avg = (int)Math.Round(CalculateAverageFromRatings(ratings));
+    return new string('★', avg).PadRight(5, '☆');
+  }
+
+  private string GetTimeAgo(DateTime dateTime)
+  {
+    var span = DateTime.Now - dateTime;
+
+    if (span.TotalMinutes < 60)
+      return $"{(int)span.TotalMinutes} minutes ago";
+    if (span.TotalHours < 24)
+      return $"{(int)span.TotalHours} hours ago";
+    if (span.TotalDays < 30)
+      return $"{(int)span.TotalDays} days ago";
+    if (span.TotalDays < 365)
+      return $"{(int)(span.TotalDays / 30)} months ago";
+    return $"{(int)(span.TotalDays / 365)} years ago";
+  }
+}

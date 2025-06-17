@@ -1,0 +1,102 @@
+﻿.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.section-title {
+    text-align: center;
+    color: #209b9bfd;
+    font-size: 38px;
+    margin: 40px 0;
+    font-weight: 800;
+}
+
+.mood-tracking-container {
+    max-width: 600px;
+    margin: 40px auto;
+}
+
+.mood-input {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.mood-input h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.mood-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.mood-btn {
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    background: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.mood-btn.selected {
+    border-color: #209b9bfd;
+}
+
+.mood-btn:hover {
+    border-color: #209b9bfd;
+    transform: translateY(-2px);
+}
+
+.mood-btn.selected {
+    background-color: #209b9bfd;
+    color: white;
+    border-color: #209b9bfd;
+}
+
+.mood-notes {
+    margin-top: 30px;
+}
+
+.mood-notes h3 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.mood-notes textarea {
+    width: 100%;
+    height: 120px;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.mood-notes textarea:focus {
+    border-color: #209b9bfd;
+    outline: none;
+}
+
+.save-btn {
+    background: #209b9bfd;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.save-btn:hover {
+    background-color: #187c7c;
+    transform: translateY(-2px);
+}

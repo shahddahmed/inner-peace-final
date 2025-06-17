@@ -1,0 +1,197 @@
+﻿@model InnerPeace.DoctorRegisterViewModel
+
+@{
+Layout = "_AuthLayout";
+ViewData["Title"] = "Doctor Register";
+}
+
+<div class="container mt-5" style="max-width: 960px;">
+    <h2 class="mb-4 text-center">Doctor Registration</h2>
+
+    <form asp-action="DoctorRegister" method="post" enctype="multipart/form-data" novalidate>
+        @Html.AntiForgeryToken()
+        <validation-summary asp-validation-summary="All" class="text-danger mb-3"></validation-summary>
+
+        <div class="row">
+            <div class="col-md-6">
+                
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label">Full Name</label>
+                    <input asp-for="Name" class="form-control" required/>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" type="email" class="form-control" required />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="Phone" class="form-label">Phone Number</label>
+                    <input asp-for="Phone" type="tel" class="form-control" required/>
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label">Password</label>
+                    <input asp-for="Password" type="password" class="form-control" required minlength="6"/>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="ConfirmPassword" class="form-label">Confirm Password</label>
+                    <input id="ConfirmPassword" name="ConfirmPassword" type="password" class="form-control" required minlength="6"/>
+                    <span class="text-danger" data-valmsg-for="ConfirmPassword" data-valmsg-replace="true"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ProfessionTitle" class="form-label">Profession Title</label>
+                    <input asp-for="ProfessionTitle" class="form-control" required/>
+                    <span asp-validation-for="ProfessionTitle" class="text-danger"></span>
+                </div>
+                
+            </div>
+
+            <div class="col-md-6">
+                
+                <div class="mb-3">
+                    <label class="form-label d-block">Gender</label>
+                    <div class="form-check form-check-inline">
+                        <input asp-for="IsMale" class="form-check-input" type="radio" value="true" id="maleRadio" checked/>
+                        <label class="form-check-label" for="maleRadio">Male</label>
+                        
+                        <div class="form-check form-check-inline">
+                            <input asp-for="IsMale" class="form-check-input" type="radio" value="false" id="femaleRadio"/>
+                            <label class="form-check-label" for="femaleRadio">Female</label>
+                        </div>
+                        <span asp-validation-for="IsMale" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Countries</label>
+                    <select asp-for="SelectedCountryIds" asp-items="Model.Countries" class="form-select" multiple required></select>
+                    <span asp-validation-for="SelectedCountryIds" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Languages</label>
+                    <select asp-for="SelectedLanguageIds" asp-items="Model.Languages" class="form-select" multiple required></select>
+                    <span asp-validation-for="SelectedLanguageIds" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Specializations</label>
+                    <select asp-for="SelectedSpecializationIds" asp-items="Model.Specializations" class="form-select" multiple required></select>
+                    <span asp-validation-for="SelectedSpecializationIds" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-6">
+            <label asp-for="Image" class="form-label">Profile Image</label>
+            <input asp-for="Image" type="file" class="form-control"/>
+        </div>
+
+        <div class="mt-4 mb-3">
+            <label class="form-label">Education History</label>
+            <div id="education-section">
+                <div class="education-item border p-3 rounded mb-2">
+                    <div class="mb-2">
+                        <label class="form-label">University</label>
+                        <input name="Educations[0].University" class="form-control" required />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Start Date</label>
+                        <input name="Educations[0].StartDate" type="date" class="form-control" required />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">End Date</label>
+                        <input name="Educations[0].EndDate" type="date" class="form-control" required />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Degree</label>
+                        <select name="Educations[0].EducationDegreeId" class="form-select" required>
+                            @foreach (var degree in Model.EducationDegrees)
+                            {
+                            <option value="@degree.Id">@degree.Degree</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button type="button" id="add-education-btn" class="btn-outline">Add Another Education</button>
+        </div>
+
+        <button type="submit" class="btn-filled w-100">Register</button>
+    </form>
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+<script>
+    (function () {
+        const form = document.querySelector('form');
+        const password = document.querySelector('input[name="Password"]');
+        const confirmPassword = document.querySelector('input[name="ConfirmPassword"]');
+        const errorSpan = document.querySelector('[data-valmsg-for="ConfirmPassword"]');
+
+        form.addEventListener('submit', function (e) {
+            errorSpan.textContent = '';
+            if (password.value !== confirmPassword.value) {
+                e.preventDefault();
+                errorSpan.textContent = 'Passwords do not match.';
+            }
+        });
+    })();
+</script>
+
+<script>
+    let eduIndex = 1;
+
+    function createEducationBlock(index) {
+        return `
+            <div class="education-item border p-3 rounded mb-2 position-relative">
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-2 remove-education-btn" aria-label="Remove"></button>
+                
+                <div class="mb-2">
+                    <label class="form-label">University</label>
+                    <input name="Educations[${index}].University" class="form-control" required />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Start Date</label>
+                    <input name="Educations[${index}].StartDate" type="date" class="form-control" required />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">End Date</label>
+                    <input name="Educations[${index}].EndDate" type="date" class="form-control" required />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Degree</label>
+                    <select name="Educations[${index}].EducationDegreeId" class="form-select" required>
+                        @foreach (var degree in Model.EducationDegrees)
+                        {
+                            <option value="@degree.Id">@degree.Degree</option>
+                        }
+                    </select>
+                </div>
+            </div>`;
+    }
+
+    document.getElementById("add-education-btn").addEventListener("click", function () {
+        const section = document.getElementById("education-section");
+        section.insertAdjacentHTML("beforeend", createEducationBlock(eduIndex));
+        eduIndex++;
+    });
+
+    document.getElementById("education-section").addEventListener("click", function (e) {
+        if (e.target.classList.contains("remove-education-btn")) {
+            const educationItems = document.querySelectorAll(".education-item");
+            if (educationItems.length > 1) {
+                e.target.closest(".education-item").remove();
+            } else {
+                alert("At least one education entry is required.");
+            }
+        }
+    });
+</script>
+
+}

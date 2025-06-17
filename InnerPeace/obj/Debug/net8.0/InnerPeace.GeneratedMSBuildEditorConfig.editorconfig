@@ -1,0 +1,115 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = InnerPeace
+build_property.RootNamespace = InnerPeace
+build_property.ProjectDir = C:\Users\compumarts\Desktop\InnerPeace\InnerPeace\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\compumarts\Desktop\InnerPeace\InnerPeace
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/Account/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxBY2Nlc3NEZW5pZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/Account/DoctorLogin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxEb2N0b3JMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/Account/DoctorRegister.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxEb2N0b3JSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/Appointment/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBwb2ludG1lbnRcaW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/Booking/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xpbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/DoctorAppointment/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdG9yQXBwb2ludG1lbnRcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/DoctorSchedule/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdG9yU2NoZWR1bGVcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/Shared/_AuthLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BdXRoTGF5b3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/Shared/_DoctorLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Eb2N0b3JMYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/FindTherapist/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmluZFRoZXJhcGlzdFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = b-vk4pdc1ohj
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/MoodTracking/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9vZFRyYWNraW5nXGluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = b-rf5nfhohqf
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/Support/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcG9ydFxpbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = b-2ps1xhw9ws
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/TherapistProfile/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGhlcmFwaXN0UHJvZmlsZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = b-waqchqp3wa
+
+[C:/Users/compumarts/Desktop/InnerPeace/InnerPeace/Views/Therapist/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGhlcmFwaXN0XEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = b-yrivcoccek

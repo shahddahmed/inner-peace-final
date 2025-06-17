@@ -1,0 +1,273 @@
+﻿/* Tabs */
+.appointments-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    background: #f8f8f8;
+    border-radius: 25px;
+    padding: 5px;
+    max-width: 400px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px 24px;
+    border: none;
+    background: none;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 20px;
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.tab-btn.active {
+    background-color: #057b79;
+    color: white;
+}
+
+/* Appointment cards */
+.appointments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.appointment-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.appointment-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.appointment-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.therapist-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    position: relative;
+}
+
+.therapist-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    object-fit: cover;
+}
+
+.therapist-details {
+    flex: 1;
+}
+
+.therapist-details h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.therapist-title {
+    margin: 5px 0 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.status-badge {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 6px 15px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.status-badge.completed {
+    background-color: #E8F5E9;
+    color: #4CAF50;
+}
+
+.status-badge.scheduled {
+    background-color: #E3F2FD;
+    color: #2196F3;
+}
+
+.status-badge.cancelled {
+    background-color: #f44336;
+    color: white;
+}
+
+.appointment-time, .appointment-type {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.appointment-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.action-btn {
+    flex: 1;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.action-btn.green {
+    background-color: #057b79;
+    color: white;
+}
+
+.action-btn {
+    background-color: #f8f8f8;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+}
+
+.action-btn.green:hover, .action-btn.reschedule:hover {
+    background-color: #046665;
+}
+
+.action-btn:hover {
+    background-color: #eee;
+}
+
+.appointment-details img {
+    display: block;
+    margin: 0  auto 20px;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border: 3px solid #4CAF50;
+}
+
+.appointment-details h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.appointment-details p {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #555;
+}
+
+.appointment-details strong {
+    color: #333;
+    font-weight: 600;
+}
+.review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.rating-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stars {
+    display: flex;
+    gap: 5px;
+    font-size: 24px;
+}
+
+.star {
+    color: #ddd;
+    cursor: pointer;
+}
+
+.star.active {
+    color: #ffd700;
+}
+
+.review-form textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.review-form button {
+    padding: 12px;
+    background: #057b79;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.review-form button:hover {
+    background: #046665;
+}
+
+.prescription-section, .notes-section {
+    margin-top: 25px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border-left: 4px solid #4CAF50;
+}
+
+.prescription-section h3, .notes-section h3 {
+    color: #4CAF50;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        margin: 80px auto 30px;
+        padding: 0 15px;
+    }
+
+    .appointments-tabs {
+        max-width: 100%;
+    }
+
+    .filter-options {
+        padding-bottom: 5px;
+    }
+
+    .appointment-card {
+        padding: 15px;
+    }
+
+    .therapist-image {
+        width: 50px;
+        height: 50px;
+    }
+}

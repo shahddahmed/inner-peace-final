@@ -1,0 +1,133 @@
+﻿@model InnerPeace.ViewModels.HomeViewModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+  <section class="hero">
+    <div class="hero-text">
+      <p class="tagline">FIND BALANCE</p>
+      <h2>Welcome to <span>Inner Peace</span>  your path to healing and clarity</h2>
+      <p class="subtext">Connect with professional therapists anytime, anywhere.</p>
+      <div class="hero-buttons">
+        <a asp-controller="Therapist" asp-action="Index" class="btn primary">Start Your Journey</a>
+      </div>
+    </div>
+
+    <div class="hero-image">
+      <img src="/video call.png" alt="Therapist session illustration" />
+    </div>
+  </section>
+@if (Model.Doctors.Any())
+{
+  <section class="talk-now-section">
+    <div class="talk-now-container">
+      <h3>If you need to talk now, we are here to help you</h3>
+      <div class="talk-now-content">
+
+        <a asp-controller="Therapist" asp-action="Index" class="avatars-badge-link">
+          <div class="avatars">
+            @foreach (var doctor in Model.Doctors.Take(4))
+            {
+              <img src="@doctor.ImagePath" alt="@doctor.Name"/>
+            }
+          </div>
+          @if (Model.Doctors.Count > 4)
+          {
+            <div class="badge">+1</div>
+          }
+        </a>
+        <a asp-controller="Therapist" asp-action="Index" class="explore-btn">Explore</a>
+      </div>
+    </div>
+  </section>
+}
+
+<section class="how-it-works">
+  <h2 class="section-title">How it works</h2>
+  <div class="steps-container">
+    <div class="step">
+      <img src="/sign-up.png" alt="Sign up illustration" />
+      <h3><span>1.</span> Sign-up as a customer</h3>
+      <p>Answer a few questions to get matched with the right therapist. You can also select the therapist yourself</p>
+    </div>
+    <div class="step">
+      <img src="/book session.jpg" alt="Book session illustration" />
+      <h3><span>2.</span> Book your session</h3>
+      <p>Choose date and time that suits you and pay using different payment methods</p>
+    </div>
+    <div class="step">
+      <img src="/journey session.png" alt="Start journey illustration" />
+      <h3><span>3.</span> Start your journey</h3>
+      <p>You can communicate with your therapist in different ways during the session: camera, mic, and chatting</p>
+    </div>
+  </div>
+</section>
+
+  @if (Model.Ratings.Any())
+  {
+    <section class="testimonials-section">
+      <h2 class="section-title">What Our Clients Are Saying</h2>
+      <div class="testimonial-carousel">
+        <button class="carousel-btn left" onclick="moveSlide(-1)">&#8249;</button>
+  
+        @foreach (var rating in Model.Ratings)
+        {
+          <div class="testimonial-card">
+            <div class="testimonial-header">
+              <span>to <strong>@rating.Doctor?.Name</strong></span>
+              <br/>
+              <span class="time">@GetTimeAgo(rating.CreatedAt)</span>
+            </div>
+            <div class="stars">
+              @RenderStars(rating)
+            </div>
+            <p class="review-text">@rating.Comment</p>
+          </div>
+        }
+    
+        <button class="carousel-btn right" onclick="moveSlide(1)">&#8250;</button>
+      
+      </div>
+  
+      <div class="carousel-dots">
+        <span class="dot active" onclick="goToSlide(0)"></span>
+        <span class="dot" onclick="goToSlide(1)"></span>
+        <span class="dot" onclick="goToSlide(2)"></span>
+      </div>
+      
+    </section>
+
+  }
+
+@functions
+{
+  private string GetTimeAgo(DateTime dateTime)
+  {
+    var span = DateTime.Now - dateTime;
+
+    if (span.TotalMinutes < 60)
+      return $"{(int)span.TotalMinutes} minutes ago";
+    if (span.TotalHours < 24)
+      return $"{(int)span.TotalHours} hours ago";
+    if (span.TotalDays < 30)
+      return $"{(int)span.TotalDays} days ago";
+    if (span.TotalDays < 365)
+      return $"{(int)(span.TotalDays / 30)} months ago";
+    return $"{(int)(span.TotalDays / 365)} years ago";
+  }
+
+  private string RenderStars(InnerPeace.Entities.Rating rating)
+  {
+    var ratings = new[]
+    {
+      (int)rating.Communication,
+      (int)rating.UnderstandingOfTheSituation,
+      (int)rating.ProvidingEffectiveSolution,
+      (int)rating.CommitmentToStartAndEndTimes
+    };
+
+    var avg = (int)Math.Round(ratings.Average());
+
+    return new string('★', avg).PadRight(5, '☆');
+  }
+}

@@ -1,0 +1,89 @@
+﻿@using InnerPeace.Entities
+@model InnerPeace.Entities.DoctorSessionSettings
+@{
+    ViewData["Title"] = "Doctor Schedule";
+    Layout = "_DoctorLayout";
+
+    ViewData["Style"] = "schedule";
+}  
+
+<div class="schedule-container">
+    <div class="page-title">My Schedule</div>
+    <div class="page-subtitle">My Weekly Schedule</div>
+        
+    <div class="toggle-container">
+        <div class="toggle-text">Enable Work Schedule</div>
+        <form method="post" asp-action="ChangeAvailability">
+            <label class="toggle-switch">
+                <input type="hidden" name="isAvailable" value="@((!Model.IsAvailable).ToString())" />
+                <input type="checkbox"
+                       onchange="this.form.submit()"
+                       id="scheduleToggle" @(Model.IsAvailable ? "checked" : "") />
+                <span class="slider"></span>
+            </label>
+        </form>
+    </div>
+
+    @if (Model.IsAvailable)
+    {
+        <div class="days-container" id="daysContainer">
+            @foreach (DaysEnum day in Enum.GetValues(typeof(DaysEnum)))
+            {
+                var time =
+                    Model.AvailabilityTimes?.Where(s => s.Day == day)
+                        .SelectMany(s => s.AvailabilityHours ?? [])
+                        .FirstOrDefault();
+                <div class="day-item">
+                    <div class="day-name">@day.ToString()</div>
+                    @if (time is not null)
+                    {
+                        <div class="day-hours">@time.AvailableFrom.ToString("hh:mm tt")-@time.AvailableTo.ToString("hh:mm tt")</div>
+                    }
+                    <i class="fas fa-chevron-right day-arrow" data-day="@day.ToString()" 
+                       data-bs-toggle="modal" data-bs-target="#reviewModal"></i>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section BelowMain {
+
+    <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ModalLabel">Add Available Time</h1>
+                    <button type="button" class="btn-close ms-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form class="review-form" id="reviewForm" method="post" asp-action="AddAvailabilityTimes" asp-controller="DoctorSchedule">
+                    <input type="hidden" id="selectedDay" name="day"/>
+                    <div class="time-selection" id="timeSelection">
+                        <div class="time-inputs">
+                            <div class="time-input">
+                                <label for="startTime">Start Time</label>
+                                <input type="time" id="startTime" name="startTime" required/>
+                            </div>
+                            <div class="time-input">
+                                <label for="endTime">End Time</label>
+                                <input type="time" id="endTime" name="endTime" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="submit" class="action-btn green w-90">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+    document.querySelectorAll('.day-arrow').forEach(icon => {
+        icon.addEventListener('click', function () {
+            document.getElementById('selectedDay').value = this.getAttribute('data-day');
+        });
+    });
+</script>
+}
+

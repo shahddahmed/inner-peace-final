@@ -1,0 +1,339 @@
+﻿
+.schedule-container {
+    width: 90%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding-bottom: 100px;
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.page-subtitle {
+    font-size: 16px;
+    color: #999;
+    margin-bottom: 20px;
+}
+
+.toggle-container {
+    background: white;
+    border-radius: 15px;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.toggle-text {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+/* Updated toggle style to match the image */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #e0e0e0;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: rgb(32, 155, 155);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.days-container {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.day-item {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+}
+
+.day-item:last-child {
+    border-bottom: none;
+}
+
+.day-name {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.day-hours {
+    font-size: 16px;
+    color: #888;
+}
+
+.day-arrow {
+    color: #ccc;
+    cursor: pointer;
+}
+
+ .back-nav {
+     display: flex;
+     align-items: center;
+     width: 90%;
+     max-width: 600px;
+     margin-top: 20px;
+ }
+
+.day-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.schedule-container {
+    width: 90%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding-bottom: 100px;
+}
+
+.time-slot {
+    background: white;
+    border-radius: 15px;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.availability-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.availability-text {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #e0e0e0;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: rgb(32, 155, 155);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.add-time-button {
+    background: white;
+    border-radius: 15px;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    margin-top: 20px;
+    cursor: pointer; /* Add cursor pointer to indicate button is clickable */
+}
+
+.add-time-text {
+    font-size: 18px;
+    margin-left: 10px;
+}
+
+.add-icon {
+    color: #666;
+    font-size: 20px;
+}
+
+/* Add hover effect to the add time button */
+.add-time-button:hover {
+    background-color: #f8f8f8;
+}
+
+/* Styles for time selection */
+.time-selection {
+    background: white;
+    border-radius: 15px;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.time-selection-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.time-inputs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.time-input {
+    flex: 1;
+    min-width: 120px;
+}
+
+.time-input label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #666;
+}
+
+.time-input input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.time-selection-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.time-selection-button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+}
+
+.cancel-button {
+    background-color: #f1f1f1;
+    color: #333;
+}
+
+.save-button {
+    background-color: rgb(32, 155, 155);
+    color: white;
+}
+
+/* Flatpickr customization */
+.flatpickr-calendar {
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Time display in slot */
+.time-range {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+}
+.action-btn {
+    flex: 1;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.action-btn.green {
+    background-color: #057b79;
+    color: white;
+}
+
+.action-btn {
+    background-color: #f8f8f8;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+}
+
+.action-btn.green:hover, .action-btn.reschedule:hover {
+    background-color: #046665;
+}
+
+.action-btn:hover {
+    background-color: #eee;
+}

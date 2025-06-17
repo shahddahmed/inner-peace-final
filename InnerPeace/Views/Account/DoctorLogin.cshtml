@@ -1,0 +1,35 @@
+﻿@model InnerPeace.Entities.User
+
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Login";
+}
+
+<div class="container mt-5" style="max-width: 480px;">
+    <h2 class="mb-4 text-center">Login to Your Account</h2>
+
+    <form asp-action="DoctorLogin" asp-controller="Account" method="post" novalidate>
+        @Html.AntiForgeryToken()
+
+        <validation-summary class="text-danger" asp-validation-summary="ModelOnly"></validation-summary>
+
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label">Email address</label>
+            <input asp-for="Email" type="email" class="form-control" placeholder="name@example.com" required />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Password" class="form-label">Password</label>
+            <input asp-for="Password" type="password" class="form-control" placeholder="Enter your password" required minlength="6" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn-filled w-100">Login</button>
+    </form>
+
+    <div class="mt-3 text-center">
+        <a asp-controller="Account" asp-action="DoctorRegister">Don't have an account? Join us</a>
+    </div>
+</div>
+<partial name="_ValidationScriptsPartial" />

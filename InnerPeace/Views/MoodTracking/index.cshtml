@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Mood Tracking";
+}
+
+<h1 class="section-title">Track Your Mood</h1>
+
+<div class="mood-tracking-container">
+    <form method="post" asp-action="CreateMood">
+        <div class="mood-input">
+            <h2>How are you feeling today?</h2>
+            <div class="mood-options">
+                <button type="button" class="mood-btn" data-mood="Amazing">😄 Amazing</button>
+                <button type="button" class="mood-btn" data-mood="Good">🙂 Good</button>
+                <button type="button" class="mood-btn" data-mood="Okay">😐 Okay</button>
+                <button type="button" class="mood-btn" data-mood="Down">😔 Down</button>
+                <button type="button" class="mood-btn" data-mood="Awful">😢 Awful</button>
+            </div>
+
+            <!-- Hidden input for selected mood -->
+            <input type="hidden" name="mood" id="selectedMood" required />
+
+            <div class="mood-notes">
+                <h3>Add a note (optional)</h3>
+                <textarea name="note" placeholder="Write your thoughts here..."></textarea>
+                <button type="submit" class="save-btn">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.querySelectorAll('.mood-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            // Remove selection from all buttons
+            document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+            // Mark clicked one
+            this.classList.add('selected');
+            // Set the selected mood value
+            document.getElementById('selectedMood').value = this.getAttribute('data-mood');
+        });
+    });
+</script>

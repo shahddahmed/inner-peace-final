@@ -1,0 +1,166 @@
+
+h1[b-2ps1xhw9ws] {
+    font-size: 28px;
+    margin: 10px 0 5px;
+}
+
+p.subtitle[b-2ps1xhw9ws] {
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+.container[b-2ps1xhw9ws] {
+    max-width: 400px;
+    margin: 50px auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.illustration[b-2ps1xhw9ws] {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+}
+
+p[b-2ps1xhw9ws] {
+    font-size: 18px;
+    margin: 20px 0;
+    color: #555;
+}
+
+.btn[b-2ps1xhw9ws] {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.phone-btn[b-2ps1xhw9ws] {
+    background-color:  #057b79;
+    color: white;
+}
+
+.whatsapp-btn[b-2ps1xhw9ws] {
+    background-color:  #057b79;
+    color: white;
+}
+
+.btn:hover[b-2ps1xhw9ws] {
+    opacity: 0.9;
+}
+
+.support-container[b-2ps1xhw9ws] {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+.support-header[b-2ps1xhw9ws] {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.support-header img[b-2ps1xhw9ws] {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+}
+
+.support-header h1[b-2ps1xhw9ws] {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.support-header .subtitle[b-2ps1xhw9ws] {
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.contact-options[b-2ps1xhw9ws] {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin: 40px auto;
+    max-width: 800px;
+}
+
+.contact-card[b-2ps1xhw9ws] {
+    background: #fff;
+    border-radius: 15px;
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.contact-card:hover[b-2ps1xhw9ws] {
+    transform: translateY(-5px);
+}
+
+.contact-icon[b-2ps1xhw9ws] {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 20px;
+    background: #f0f7f7;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.contact-title[b-2ps1xhw9ws] {
+    font-size: 1.3rem;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.contact-description[b-2ps1xhw9ws] {
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.contact-btn[b-2ps1xhw9ws] {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #057b79;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.contact-btn:hover[b-2ps1xhw9ws] {
+    background-color: #046664;
+}
+
+@media (max-width: 768px) {
+    .support-header h1[b-2ps1xhw9ws] {
+        font-size: 2rem;
+    }
+
+    .contact-options[b-2ps1xhw9ws] {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-container[b-2ps1xhw9ws] {
+        grid-template-columns: 1fr;
+    }
+}

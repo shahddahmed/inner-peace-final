@@ -1,0 +1,283 @@
+
+.profile-card[b-waqchqp3wa] {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.interests-section[b-waqchqp3wa], .therapist-info[b-waqchqp3wa] {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    padding: 20px;
+    flex: 1;
+    min-width: 300px;
+}
+
+.interests-section h2[b-waqchqp3wa] {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.tags span[b-waqchqp3wa], .mini-tags span[b-waqchqp3wa] {
+    display: inline-block;
+    background: #e8f6f0;
+    color: #333;
+    padding: 6px 12px;
+    border-radius: 10px;
+    margin: 5px 5px 0 0;
+    font-size: 13px;
+}
+
+
+.therapist-info h3[b-waqchqp3wa] {
+    margin: 10px 0 5px;
+}
+
+.specialty[b-waqchqp3wa] {
+    color: #209b9b;
+    margin-bottom: 5px;
+}
+
+.rating[b-waqchqp3wa] {
+    margin-bottom: 10px;
+}
+
+.info-list[b-waqchqp3wa] {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.buttons[b-waqchqp3wa] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.review-btn[b-waqchqp3wa],
+.slot-btn[b-waqchqp3wa],
+.support-btn[b-waqchqp3wa] {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.review-btn[b-waqchqp3wa] {
+    background: #ffffff;
+    border: 2px solid #209b9b;
+    color: #209b9b;
+}
+
+.slot-btn[b-waqchqp3wa] {
+    background: #209b9b;
+    color: white;
+}
+
+.support-btn[b-waqchqp3wa] {
+    background: #209b9b;
+    color: white;
+}
+
+.reviews[b-waqchqp3wa] {
+    margin-top: 30px;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.review-bars p[b-waqchqp3wa] {
+    margin: 10px 0 5px;
+}
+
+.bar[b-waqchqp3wa] {
+    background: #eee;
+    height: 10px;
+    border-radius: 5px;
+    position: relative;
+    margin-bottom: 15px;
+}
+.bar div[b-waqchqp3wa] {
+    background: #333;
+    height: 100%;
+    border-radius: 5px;
+}
+.bar span[b-waqchqp3wa] {
+    position: absolute;
+    right: 0;
+    top: -25px;
+    font-size: 12px;
+    color: #333;
+}
+
+.review-card[b-waqchqp3wa] {
+    margin-top: 30px;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    position: relative;
+    max-height: 250px; /* تحديد الحد الأقصى للارتفاع */
+    overflow-y: auto;  /* السماح بالتمرير الرأسي */
+}
+
+/* لإضافة تأثير التمرير التلقائي داخل الكارت */
+@keyframes auto-scroll-b-waqchqp3wa {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-100%);
+    }
+}
+
+.review-card[b-waqchqp3wa] {
+    margin-top: 30px;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    position: relative;
+    max-height: 250px; /* تحديد الحد الأقصى للارتفاع */
+    overflow: hidden; /* إخفاء المحتوى الزائد */
+}
+
+.reviews-list[b-waqchqp3wa] {
+    display: flex;
+    flex-direction: column;
+    animation: auto-scroll-b-waqchqp3wa 10s linear infinite; /* التمرير التلقائي */
+}
+
+@keyframes auto-scroll-b-waqchqp3wa {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-100%); /* يتم التمرير بين التعليقات */
+    }
+}
+
+.review-card[b-waqchqp3wa] {
+    margin-top: 30px;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.reviews-slider-wrapper[b-waqchqp3wa] {
+    overflow: hidden;
+    width: 100%;
+}
+
+.reviews-slider[b-waqchqp3wa] {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+}
+
+.review-item[b-waqchqp3wa] {
+    flex: 0 0 100%;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.quote[b-waqchqp3wa] {
+    font-size: 40px;
+    color: #ccc;
+    margin-bottom: 10px;
+}
+
+.review-text[b-waqchqp3wa] {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.review-footer[b-waqchqp3wa] {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    align-items: center;
+    color: #555;
+}
+
+.review-dots[b-waqchqp3wa] {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.dot[b-waqchqp3wa] {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #ddd;
+    border-radius: 50%;
+    margin: 0 5px;
+    transition: background 0.3s ease;
+}
+
+.dot.active[b-waqchqp3wa] {
+    background: #209b9b;
+}
+
+
+
+
+.check-more[b-waqchqp3wa] {
+    text-align: center;
+    margin-top: 20px;
+    font-weight: 500;
+    color: #008060;
+}
+
+.check-more a[b-waqchqp3wa] {
+    text-decoration: none;
+    color: inherit;
+}
+
+.education-section[b-waqchqp3wa] {
+    margin-top: 30px;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.education-section h2[b-waqchqp3wa] {
+    color: #209b9b;
+    margin-bottom: 15px;
+}
+.certificate-section[b-waqchqp3wa] {
+    margin-top: 30px;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.certificate-section h2[b-waqchqp3wa] {
+    color: #209b9b;
+    margin-bottom: 15px;
+}
+.cerf-item[b-waqchqp3wa] {
+    margin-bottom: 15px;
+}
+.edu-item[b-waqchqp3wa] {
+    margin-bottom: 15px;
+}
+
+.degree[b-waqchqp3wa] {
+    font-weight: 600;
+}
+
+.university[b-waqchqp3wa], .duration[b-waqchqp3wa] {
+    font-size: 14px;
+    color: #555;
+}

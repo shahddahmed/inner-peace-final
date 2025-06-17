@@ -1,0 +1,152 @@
+﻿.booking-layout {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.left-panel {
+    width: 35%;
+}
+
+.right-panel {
+    width: 65%;
+}
+
+.profile-box {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.title {
+    color: #2ca78c;
+}
+
+.rating {
+    color: #2ca78c;
+}
+
+.duration-box {
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.radio-group {
+    margin-top: 10px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.booking-box {
+    text-align: center;
+    margin-top: 20px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.book-btn {
+    background: #209b9bfd;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.slots-box {
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.calendar-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.slots-grid {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+}
+
+.day-column {
+    background: #fff;
+    padding: 10px;
+    border-radius: 6px;
+    min-width: 120px;
+    box-shadow: 0 0 5px #209b9bfd;
+    margin: 0 10px;
+}
+
+.no-slots p {
+    color: #209b9bfd;
+    font-size: 14px;
+    text-align: center;
+}
+
+.slot {
+    display: block;
+    width: 100%;
+    margin: 5px 0;
+    padding: 5px;
+    background: #eef;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.slot.selected {
+    background: #209b9bfd;
+    color: white;
+}
+
+.timezone-box {
+    font-size: 14px;
+    margin-top: 20px;
+    color: #209b9bfd;
+}
+
+.timezone-box a {
+    color: #209b9bfd;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+.reserved-toggle {
+    margin-top: 10px;
+}
+
+.support-button {
+    text-align: right;
+    margin-top: 30px;
+}
+
+.support-button button {
+    background: #209b9bfd;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+}

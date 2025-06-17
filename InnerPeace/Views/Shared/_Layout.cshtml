@@ -1,0 +1,121 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - InnerPeace</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+    @if (!string.IsNullOrEmpty(ViewData["Style"]?.ToString()))
+    {
+        <link rel="stylesheet" href="~/css/@(ViewData["Style"]).css" />
+    }
+    else
+    {
+        <link rel="stylesheet" href="~/@(nameof(InnerPeace)).styles.css" />
+    }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+</head>
+<body>
+<header class="navbar">
+    <div class="logo-container">
+        <a href="/"> 
+            <img src="~/logo.png" alt="Inner Peace logo" class="logo" />
+            <div class="brand-text">
+                <h1>Inner peace</h1>
+                <span>Hope, Help, Heal...</span>
+            </div>
+        </a>
+    </div>
+    <nav class="nav-links">
+        <a asp-controller="Therapist" asp-action="Index">Therapists List</a>
+        @if (User.Identity?.IsAuthenticated == true && User.IsInRole("User"))
+        {
+            <a asp-controller="MoodTracking" asp-action="Index">Mood Tracking</a>
+            <a asp-controller="FindTherapist" asp-action="Index">Find A Therapist</a>
+            <a asp-controller="Appointment" asp-action="Index">Appointments</a>
+        }
+        <a asp-controller="Support" asp-action="Index">Support</a>
+    </nav>
+
+@if (!User.Identity?.IsAuthenticated ?? true)
+    {
+        <div class="auth-buttons">
+            <a asp-controller="Account" asp-action="Login"class="btn-outline">Sign in</a>
+            <a asp-controller="Account" asp-action="Register" class="btn-filled">Sign up</a>
+        </div>
+    }
+else
+{
+    <a asp-controller="Account" asp-action="Logout"class="btn-outline">Sign out</a> 
+}
+    
+</header>
+
+<main class="container p-5">
+    @RenderBody()
+</main>
+
+@await RenderSectionAsync("BelowMain", required: false)
+
+<footer class="footer">
+    <div class="footer-container">
+        <div class="brand-section">
+            <div class="brand-logo">Inner Peace</div>
+            <div class="brand-tagline">Hope, Help, Heal...</div>
+            <p class="brand-description">
+                You are not alone
+            </p>
+        </div>
+        
+        <div class="footer-section">
+            <h3 class="footer-title">Blog</h3>
+            <ul class="footer-links">
+                <li><a href="#">Terms and conditions</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-section">
+            <h3 class="footer-title">Resources</h3>
+            <ul class="footer-links">
+
+                <li><a href="#">Emergency numbers</a></li>
+            </ul>
+        </div>
+    @if (!User.Identity?.IsAuthenticated ?? true)
+    {
+        <div class="footer-section">
+            <h3 class="footer-title">Join us</h3>
+
+            <div class="join-section">
+                <a asp-controller="Account" asp-action="Register" class="join-btn join-client">Join as a Patient</a>
+                <div class="join-divider">Or</div>
+                <a asp-controller="Account" asp-action="DoctorRegister" class="join-btn join-therapist">Join as a Therapist</a>
+                <p class="sign-in-text">If you have a doctor account <a asp-controller="Account" asp-action="DoctorLogin">Sign in</a></p>
+            </div>
+
+        </div>
+    }
+    </div>
+
+    
+    <div class="footer-bottom">
+        <p>All rights reserved to Inner Peace 2025</p>
+        
+    </div>
+</footer>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/carousel.js"></script>
+
+@if (User.Identity?.IsAuthenticated ?? false)
+{
+    <script src="https://cdn.botpress.cloud/webchat/v3.0/inject.js"></script>
+    <script src="https://files.bpcontent.cloud/2025/06/16/05/20250616053525-ELGIUGD6.js"></script>
+}
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

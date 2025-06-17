@@ -1,0 +1,324 @@
+﻿@model InnerPeace.ViewModels.TherapistViewModel
+@{
+    ViewData["Title"] = "Therapist";
+    var selectedGender = ViewBag.Gender as string;
+    var selectedSpecs = (ViewBag.Specializations as string ?? "")
+        .Split(',', StringSplitOptions.RemoveEmptyEntries)
+        .Select(s => s.Trim())
+        .ToList();
+}
+
+<h1 class="section-title">Our Therapists</h1>
+
+<div class="breadcrumbs">
+    <a href="/">Home</a> &gt; Therapists list
+</div>
+
+<div class="page-container">
+    <aside class="filters-sidebar">
+        <h2>Filters</h2>
+        <hr>
+        @if (Model.Specializations.Any())
+        {
+            <div class="filter-section">
+                <p class="title">🔺 Areas of interest</p>
+                <select data-filter="specialization">
+                    <option value="">Select Specialization</option>
+                    @foreach (var specialization in Model.Specializations)
+                    {
+                        bool isSelected = selectedSpecs.Contains(specialization.Name);
+                        <option value="@specialization.Name" selected="@(isSelected ? "selected" : null)">
+                            @specialization.Name
+                        </option>
+                    }
+                </select>
+            </div>
+        }
+
+        @if (Model.Languages.Count > 1)
+        {
+            <div class="filter-section">
+                <p class="title">🗣️ Languages Spoken</p>
+                @foreach (var language in Model.Languages)
+                {
+                    <label><input type="checkbox" data-filter="language" value="@language.Name"> @language.Name</label>
+                }
+            </div>
+        }
+
+        @if (@Model.Durations.Any())
+        {
+            <div class="filter-section">
+                <p class="title">⏱ Duration</p>
+                <label><input type="radio" name="duration" value="all" data-filter="duration" checked> All</label>
+                @foreach (var duration in Model.Durations)
+                {
+                    <label><input type="radio" name="duration" value="@duration.Duration" data-filter="duration"> @duration.Duration Min</label>
+                }
+            </div>
+        }
+
+        <div class="filter-section">
+            <p class="title">⚧ Therapist Gender</p>
+            <label>
+                <input type="radio" name="gender" value="all" data-filter="gender"
+                       @(string.IsNullOrEmpty(selectedGender) || selectedGender == "all" ? "checked" : "")> All
+            </label>
+            <label>
+                <input type="radio" name="gender" value="male" data-filter="gender"
+                       @(selectedGender == "male" ? "checked" : "")> Male
+            </label>
+            <label>
+                <input type="radio" name="gender" value="female" data-filter="gender"
+                       @(selectedGender == "female" ? "checked" : "")> Female
+            </label>
+        </div>
+
+        <div class="filter-section">
+            <p class="title">💵 Session Fees <span class="currency"></span></p>
+            <div class="range-container">
+                <span class="range-label">0</span>
+                <input type="range" min="0" max="1000" value="1000" data-filter="fees-range" id="feeRange">
+                <span class="range-label" id="rangeValue">1000</span>
+            </div>
+        </div>
+
+        @if (Model.EducationDegrees.Any())
+        {
+            <div class="filter-section">
+                <p class="title">🎓 Education Level</p>
+                @foreach (var educationDegree in Model.EducationDegrees)
+                {
+                    <label><input type="checkbox" data-filter="education" value="@educationDegree.Degree">@educationDegree.Degree</label>
+                }
+            </div>
+        }
+
+        <div class="filter-section">
+            <button class="reset-button">Reset Filter</button>
+        </div>
+    </aside>
+
+    <main class="content">
+        <div class="therapist-card-container">
+            @foreach (var doctor in Model.Doctor)
+            {
+                var minEntry = doctor.SessionSettings?.DurationPrice.OrderBy(kv => kv.Value).FirstOrDefault() ?? new ();
+                var minDuration = minEntry.Key;
+                var minPrice = minEntry.Value;
+                var rating = CalculateAverageFromRatings(doctor.Ratings?.ToList() ?? []);
+
+                <div class="therapist-card"
+                     data-name="@doctor.Name"
+                     data-rating="@rating"
+                     data-specialization="@string.Join(",", doctor.DoctorSpecializations.Select(s => s.Specialization.Name))"
+                     data-fees="@minPrice"
+                     data-availability=""
+                     data-gender="@(doctor.IsMale ? "male" : "female")"
+                     data-language="@string.Join(",", doctor.DoctorLanguages.Select(d=>d.Language.Name))"
+                     data-duration="@string.Join(",", doctor.SessionSettings?.DurationPrice.Select(kv=>kv.Key.ToString() ) ?? [])"
+                     data-education="@string.Join(",", doctor.Educations.Select(e=>e.EducationDegree.Degree))"
+                     data-practice-type="">
+                    <img src="@doctor.ImagePath" alt="@doctor.Name" style="width: 200px;height: 200px;border-radius: 50%;">
+                    <h3 class="therapist-name">@doctor.Name</h3>
+                    <p class="therapist-specialization">@doctor.ProfessionTitle</p>
+                    <div class="rating">@RenderStarsFromRatings(doctor.Ratings?.ToList() ?? []) @rating.ToString("n2")</div>
+                    <p class="interests">
+                        @foreach (var specialization in doctor.DoctorSpecializations.Select(e => e.Specialization))
+                        {
+                            <span>@specialization.Name</span>
+                        }
+                    </p>
+                    <p class="session-fees">Starts from <strong>@minPrice</strong> / @minDuration Min</p>
+                    <div class="actions">
+                        <button class="view-profile-btn"
+                                onclick="location.href='@Url.Action("Index", "TherapistProfile", new { id = doctor.Id })'">
+                            View Profile
+                        </button>
+                        @if ((User.Identity?.IsAuthenticated ?? false) && (doctor.SessionSettings?.IsAvailable ?? false) )
+                        {
+                            <button
+                                class="book-now-btn" data-therapist="@doctor.Name"
+                                onclick="location.href='@Url.Action("Index", "Booking", new { id = doctor.Id })'">
+                                Book Now
+                            </button>
+                        }
+
+                    </div>
+                </div>
+            }
+        </div>
+    </main>
+</div>
+
+<script>
+    
+document.addEventListener("DOMContentLoaded", function () {
+    const filters = {
+        specialization: "",
+        gender: "all",
+        languages: [],
+        duration: "all",
+        education: [],
+        fees: 1000
+    };
+
+    const therapistCards = document.querySelectorAll('.therapist-card');
+
+    const updateFilters = () => {
+        therapistCards.forEach(card => {
+            const spec = card.dataset.specialization?.split(',') || [];
+            const gender = card.dataset.gender;
+            const lang = card.dataset.language?.split(',') || [];
+            const durations = card.dataset.duration?.split(',').map(d => d.trim()) || [];
+            const educations = card.dataset.education?.split(',') || [];
+            const fee = parseFloat(card.dataset.fees);
+
+            let show = true;
+
+            if (filters.specialization && !spec.includes(filters.specialization)) show = false;
+            if (filters.gender !== "all" && gender !== filters.gender) show = false;
+            if (filters.languages.length > 0 && !filters.languages.some(l => lang.includes(l))) show = false;
+            if (filters.duration !== "all" && !durations.includes(filters.duration)) show = false;
+            if (filters.education.length > 0 && !filters.education.some(e => educations.includes(e))) show = false;
+            if (fee > filters.fees) show = false;
+
+            card.style.display = show ? "block" : "none";
+        });
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if (urlParams.has("specializationFilter")) {
+        filters.specialization = urlParams.get("specializationFilter");
+        const specSelect = document.querySelector('[data-filter="specialization"]');
+        if (specSelect) specSelect.value = filters.specialization;
+    }
+
+    if (urlParams.has("gender")) {
+        const gender = urlParams.get("gender");
+        if (["male", "female", "all"].includes(gender)) {
+            filters.gender = gender;
+            const genderRadio = document.querySelector(`[data-filter="gender"][value="${gender}"]`);
+            if (genderRadio) genderRadio.checked = true;
+        }
+    }
+
+    if (urlParams.has("languages")) {
+        filters.languages = urlParams.get("languages").split(",");
+        filters.languages.forEach(lang => {
+            const checkbox = document.querySelector(`[data-filter="language"][value="${lang}"]`);
+            if (checkbox) checkbox.checked = true;
+        });
+    }
+
+    if (urlParams.has("duration")) {
+        filters.duration = urlParams.get("duration");
+        const durationRadio = document.querySelector(`[data-filter="duration"][value="${filters.duration}"]`);
+        if (durationRadio) durationRadio.checked = true;
+    }
+
+    if (urlParams.has("education")) {
+        filters.education = urlParams.get("education").split(",");
+        filters.education.forEach(edu => {
+            const checkbox = document.querySelector(`[data-filter="education"][value="${edu}"]`);
+            if (checkbox) checkbox.checked = true;
+        });
+    }
+
+    if (urlParams.has("fees")) {
+        filters.fees = parseFloat(urlParams.get("fees"));
+        const feeInput = document.querySelector('[data-filter="fees-range"]');
+        if (feeInput) {
+            feeInput.value = filters.fees;
+            document.getElementById('rangeValue').textContent = filters.fees;
+        }
+    }
+    
+    document.querySelector('[data-filter="specialization"]').addEventListener('change', function () {
+        filters.specialization = this.value;
+        updateFilters();
+    });
+
+    document.querySelectorAll('[data-filter="gender"]').forEach(input => {
+        input.addEventListener('change', function () {
+            filters.gender = this.value;
+            updateFilters();
+        });
+    });
+
+    document.querySelectorAll('[data-filter="language"]').forEach(input => {
+        input.addEventListener('change', function () {
+            filters.languages = Array.from(document.querySelectorAll('[data-filter="language"]:checked')).map(i => i.value);
+            updateFilters();
+        });
+    });
+
+    document.querySelectorAll('[data-filter="duration"]').forEach(input => {
+        input.addEventListener('change', function () {
+            filters.duration = this.value;
+            updateFilters();
+        });
+    });
+
+    document.querySelectorAll('[data-filter="education"]').forEach(input => {
+        input.addEventListener('change', function () {
+            filters.education = Array.from(document.querySelectorAll('[data-filter="education"]:checked')).map(i => i.value);
+            updateFilters();
+        });
+    });
+
+    document.querySelector('[data-filter="fees-range"]').addEventListener('input', function () {
+        filters.fees = parseFloat(this.value);
+        document.getElementById('rangeValue').textContent = this.value;
+        updateFilters();
+    });
+
+    document.querySelector('.reset-button').addEventListener('click', function () {
+        filters.specialization = "";
+        filters.gender = "all";
+        filters.languages = [];
+        filters.duration = "all";
+        filters.education = [];
+        filters.fees = 1000;
+
+        document.querySelector('[data-filter="specialization"]').value = "";
+        document.querySelector('[data-filter="fees-range"]').value = 1000;
+        document.getElementById('rangeValue').textContent = 1000;
+
+        document.querySelectorAll('[data-filter="gender"][value="all"]').forEach(r => r.checked = true);
+        document.querySelectorAll('[data-filter="language"], [data-filter="education"]').forEach(c => c.checked = false);
+        document.querySelectorAll('[data-filter="duration"][value="all"]').forEach(r => r.checked = true);
+
+        updateFilters();
+    });
+
+    updateFilters();
+});
+</script>
+
+
+@functions {
+    private List<int> GetRatingValues(InnerPeace.Entities.Rating rating)
+    {
+        return
+        [
+            (int)rating.Communication,
+            (int)rating.UnderstandingOfTheSituation,
+            (int)rating.ProvidingEffectiveSolution,
+            (int)rating.CommitmentToStartAndEndTimes
+        ];
+    }
+
+    private double CalculateAverageFromRatings(List<InnerPeace.Entities.Rating> ratings)
+    {
+        var allValues = ratings.SelectMany(GetRatingValues).ToList();
+        return allValues.Any() ? allValues.Average() : 0;
+    }
+
+    private string RenderStarsFromRatings(List<InnerPeace.Entities.Rating> ratings)
+    {
+        var avg = (int)Math.Round(CalculateAverageFromRatings(ratings));
+        return new string('★', avg).PadRight(5, '☆');
+    }
+}

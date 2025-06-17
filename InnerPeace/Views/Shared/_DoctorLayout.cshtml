@@ -1,0 +1,68 @@
+﻿@using System.Security.Claims
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - InnerPeace</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+    @if (!string.IsNullOrEmpty(ViewData["Style"]?.ToString()))
+    {
+        <link rel="stylesheet" href="~/css/@(ViewData["Style"]).css" />
+    }
+    else
+    {
+        <link rel="stylesheet" href="~/@(nameof(InnerPeace)).styles.css" />
+    }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+</head>
+<body>
+<header class="navbar">
+    <div class="logo-container">
+        <a href="/"> 
+            <img src="~/logo.png" alt="Inner Peace logo" class="logo" />
+            <div class="brand-text">
+                <h1>Inner peace</h1>
+                <span>Hope, Help, Heal...</span>
+            </div>
+        </a>
+    </div>
+    <nav class="nav-links">
+        <a asp-controller="DoctorAppointment" asp-action="Index">Appointments</a>
+        
+        <a asp-controller="DoctorSchedule" asp-action="Index">MySchedule</a>
+    </nav>
+    
+    @{
+        var claims = User.Claims.ToList();
+        var name = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? "Doctor";
+        var imagePath = claims.FirstOrDefault(c => c.Type == "ImagePath")?.Value ?? "/default.png"; 
+    }
+    <div class="header d-flex justify-content-between align-content-center">
+        <img src="@imagePath" alt="Dr @name" class="profile-img" />
+        <div class="d-flex align-items-center">
+            <span class="header-text">Dr @name</span>
+        </div>
+    </div>
+
+
+    <a asp-controller="Account" asp-action="Logout"class="btn-outline">Sign out</a> 
+
+    
+</header>
+
+<main class="container p-5">
+    @RenderBody()
+</main>
+`
+@await RenderSectionAsync("BelowMain", required: false)
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/carousel.js"></script>
+
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

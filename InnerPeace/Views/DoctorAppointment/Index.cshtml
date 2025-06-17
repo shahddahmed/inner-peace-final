@@ -1,0 +1,220 @@
+﻿@model List<InnerPeace.Entities.Session>
+@{
+    Layout = "_DoctorLayout";
+    ViewData["Title"] = "Doctor Appointments";
+
+    ViewData["Style"] = "appointment";
+    var currentSessions = Model.Where(session =>
+        {
+            var time = session.DateTime;
+            var duration = session.Duration.Duration;
+            var sessionEnd = time.AddMinutes(duration);
+            var now = DateTime.Now;
+
+            return !(now > sessionEnd);
+        })
+        .OrderByDescending(session =>
+        {
+            var time = session.DateTime;
+            var duration = session.Duration.Duration;
+            var sessionEnd = time.AddMinutes(duration);
+            var now = DateTime.Now;
+            
+            if (now >= time && now <= sessionEnd)
+                return 2;
+            return 1;
+        })
+        .ThenBy(session => session.DateTime)
+        .ToList();
+
+    var previousSessions = Model.Where(session =>
+    {
+        var time = session.DateTime;
+        var duration = session.Duration.Duration;
+        var sessionEnd = time.AddMinutes(duration);
+        var now = DateTime.Now;
+
+        return now > sessionEnd;
+    }).ToList();
+}
+<div class="appointments-tabs">
+    <button class="tab-btn active" data-tab="current">Current</button>
+    <button class="tab-btn" data-tab="previous">Previous</button>
+</div>
+
+<div id="currentSessions" class="appointments-list">
+    @foreach (var session in currentSessions)
+    {
+        var duration = session.Duration.Duration;
+        var time = session.DateTime;
+        var sessionEnd = time.AddMinutes(duration);
+        var now = DateTime.Now;
+
+        string status;
+        if (now >= time && now <= sessionEnd)
+        {
+            status = "Now";
+        }
+        else if (now > sessionEnd)
+        {
+            status = "Completed";
+        }
+        else
+        {
+            status = "Pending";
+        }
+
+        <div class="appointment-card" data-appointment-id="@session.Id">
+            <div class="appointment-content"
+                 data-name="@session.User.Name"
+                 data-date="@time.ToString("yyyy-MM-dd")"
+                 data-time="@time.ToString("hh:mm tt")"
+                 data-duration="@duration"
+                 data-status="@status"
+                 data-prescription="@session.Prescription"
+                 data-notes="@session.Note">
+                <div class="therapist-info">
+                    <div class="therapist-details">
+                        <span class="d-flex">Patient name: <h3 class="px-2">@session.User.Name</h3></span>
+                    </div>
+                    <span class="status-badge @status.ToLower()">
+                        @status
+                    </span>
+                </div>
+
+                <div class="appointment-time">
+                    <div class="time-item"><i class="far fa-calendar"></i> <span>@(time.Date.ToString("yyyy MM dd"))</span></div>
+                    <div class="time-item"><i class="far fa-clock"></i> <span>@(time.ToString("hh:mm tt"))</span></div>
+                    <div class="time-item"><i class="fas fa-hourglass-half"></i> <span>@duration Min</span></div>
+                </div>
+            </div>
+
+            <div class="appointment-actions">
+                @if (status == "Now")
+                {
+                    <button class="action-btn green"
+                            onclick="location.href='@session.HostingUrl'">
+                        Now
+                    </button>
+                }
+                @if (status == "Completed" && session.Prescription is null)
+                {
+                    
+                    <button class="action-btn" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                        Add Prescription
+                    </button>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<div id="previousSessions" class="appointments-list" style="display:none;">
+    @foreach (var session in previousSessions)
+    {
+        var duration = session.Duration.Duration;
+        var time = session.DateTime;
+        var status = "Completed"; // previous are always completed
+
+        <div class="appointment-card" data-appointment-id="@session.Id" data-doctor-id="@session.DoctorId">
+            <div class="appointment-content"
+                 data-name="@session.User.Name"
+                 data-date="@time.ToString("yyyy-MM-dd")"
+                 data-time="@time.ToString("hh:mm tt")"
+                 data-duration="@duration"
+                 data-status="@status"
+                 data-prescription="@session.Prescription"
+                 data-notes="@session.Note">
+                <div class="therapist-info">
+                    <div class="therapist-details">
+                        <span class="d-flex">Patient name: <h3 class="px-2">@session.User.Name</h3></span>
+                    </div>
+                    <span class="status-badge @status.ToLower()">
+                        @status
+                    </span>
+                </div>
+
+                <div class="appointment-time">
+                    <div class="time-item"><i class="far fa-calendar"></i> <span>@(time.Date.ToString("yyyy MM dd"))</span></div>
+                    <div class="time-item"><i class="far fa-clock"></i> <span>@(time.ToString("hh:mm tt"))</span></div>
+                    <div class="time-item"><i class="fas fa-hourglass-half"></i> <span>@duration Min</span></div>
+                </div>
+            </div>
+
+            <div class="appointment-actions">
+                @if (status == "Now")
+                {
+                    <button class="action-btn green"
+                            onclick="location.href='@session.HostingUrl'">
+                        Now
+                    </button>
+                }
+                @if (status == "Completed" && session.Prescription is null)
+                {
+                    
+                    <button class="action-btn" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                        Add Prescription
+                    </button>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@section BelowMain {
+    <!-- Review Modal -->
+    <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ModalLabel">Write the treatment</h1>
+                    <button type="button" class="btn-close ms-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form class="review-form" id="reviewForm" method="post" asp-action="WriteTreatment" asp-controller="DoctorAppointment">
+                    <div class="modal-body">
+                        <input type="hidden" name="sessionId" id="reviewSessionId"/>
+                        <label>Prescription</label>
+                        <textarea name="prescription" placeholder="Write the treatment..." required></textarea>
+                    </div>
+                    <div class="modal-body">
+           
+                        <label>Note</label>
+                        <textarea name="note" placeholder="Write your notes..." required></textarea>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="submit" class="action-btn green w-90">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+
+    <script>
+
+        document.querySelectorAll('[data-bs-target="#reviewModal"]').forEach(button => {
+            button.addEventListener('click', () => {
+                const card = button.closest('[data-appointment-id]');
+                if (card) {
+                    document.getElementById('reviewSessionId').value = card.dataset.appointmentId;
+                }
+            });
+        });
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.tab-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const tab = button.dataset.tab;
+
+                    document.getElementById('previousSessions').style.display = (tab === 'previous') ? 'block' : 'none';
+                    document.getElementById('currentSessions').style.display = (tab === 'current') ? 'block' : 'none';
+
+                    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                });
+            });
+            
+        });
+    </script>
+}
+

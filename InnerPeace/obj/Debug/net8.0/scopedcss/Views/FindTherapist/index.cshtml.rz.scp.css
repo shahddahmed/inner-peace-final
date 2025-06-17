@@ -1,0 +1,210 @@
+/* Reset basics */
+*[b-vk4pdc1ohj] {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.btn-outline[b-vk4pdc1ohj] {
+    padding: 8px 16px;
+    border: 2px solid #209b9bfd;
+    color: #209b9bfd;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+.btn-outline:hover[b-vk4pdc1ohj] {
+    background-color: #f0f7ff;
+}
+
+.btn-filled[b-vk4pdc1ohj] {
+    padding: 8px 16px;
+    background-color: #209b9bfd;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s ease;
+}
+
+
+.btn-filled:hover[b-vk4pdc1ohj] {
+    background-color: #187c7c;
+    transform: translateY(-2px);
+}
+
+/* Buttons */
+.btn[b-vk4pdc1ohj] {
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: 0.2s ease-in-out;
+}
+
+.btn.primary[b-vk4pdc1ohj] {
+    background-color: #209b9bfd;
+    color: #fff;
+}
+
+.btn.primary:hover[b-vk4pdc1ohj] {
+    background-color: #209b9bfd;
+}
+
+.btn.secondary[b-vk4pdc1ohj] {
+    border: 2px solid #209b9bfd;
+    color: #209b9bfd;
+    background-color: transparent;
+}
+
+.btn.secondary:hover[b-vk4pdc1ohj] {
+    background-color: #eaf2ff;
+}
+
+.container[b-vk4pdc1ohj] {
+    width: 95%;
+    max-width: 600px;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    margin: 1rem auto; /* Centered with auto margins */
+    position: relative;
+}
+
+.progress-container[b-vk4pdc1ohj] {
+    width: 100%;
+    margin: 25px 0;
+}
+
+.progress-bar[b-vk4pdc1ohj] {
+    height: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+#progress[b-vk4pdc1ohj] {
+    height: 100%;
+    width: 0%;
+    background-color: #209b9bfd;
+    transition: width 0.4s ease;
+}
+
+.step[b-vk4pdc1ohj] {
+    display: none;
+    animation: fadeIn-b-vk4pdc1ohj 0.5s ease;
+    text-align: start;
+    min-width: 250px;
+    max-width: 100%;
+    padding: 10px 0 10px 0;
+}
+
+.step.active[b-vk4pdc1ohj] {
+    display: block;
+}
+
+.options[b-vk4pdc1ohj] {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 25px 0;
+}
+
+.option-button[b-vk4pdc1ohj] {
+    padding: 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    font-size: 15px;
+    margin: 4px;
+}
+
+.option-button:hover[b-vk4pdc1ohj] {
+    border-color: #209b9bfd;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.option-button.selected[b-vk4pdc1ohj] {
+    background-color: #209b9bfd;
+    color: white;
+    border-color: #209b9bfd;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.nav-buttons[b-vk4pdc1ohj] {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    gap: 15px;
+}
+
+.nav-button[b-vk4pdc1ohj] {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 16px;
+    transition: all 0.3s;
+    flex: 1;
+}
+
+#prevBtn[b-vk4pdc1ohj] {
+    background-color: #f1f1f1;
+    color: #333;
+}
+
+#prevBtn:hover:not(:disabled)[b-vk4pdc1ohj] {
+    background-color: #e0e0e0;
+}
+
+#nextBtn[b-vk4pdc1ohj] {
+    background-color: #209b9bfd;
+    color: white;
+}
+
+#nextBtn:hover:not(:disabled)[b-vk4pdc1ohj] {
+    background-color: #209b9bfd;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+#nextBtn:disabled[b-vk4pdc1ohj] {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.step[data-step="1"] .options[b-vk4pdc1ohj] {
+    border: 2px dashed #209b9bfd;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f8f8f8;
+}
+
+.step[data-step="1"] .options[b-vk4pdc1ohj]::before {
+    content: "You can select multiple options";
+    display: block;
+    font-size: 0.9em;
+    color: #209b9bfd;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+
+@keyframes fadeIn-b-vk4pdc1ohj {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+

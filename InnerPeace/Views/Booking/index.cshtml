@@ -1,0 +1,250 @@
+﻿@using InnerPeace.Entities
+@model InnerPeace.Entities.Doctor
+@{
+   ViewData["Title"] = "Booking";
+   ViewData["Style"] = "booking";
+}
+
+    <h1>Session booking</h1>
+
+<div class="booking-layout">
+  <div class="left-panel">
+    <section class="profile-box">
+      <img src="@Model.ImagePath" alt="@Model.Name" class="avatar" style="width: 60px;height: 60px;border-radius: 50%;">
+      <div>
+        @{
+          string ratingCount = string.Empty;
+          
+          if(Model.Ratings?.Count > 0)
+            ratingCount = $"{Model.Ratings?.Count} Reviews";
+        }
+        <h2>@Model.Name</h2>
+        <p class="title">@Model.ProfessionTitle</p>
+        <p class="rating">@RenderStarsFromRatings(Model.Ratings?.ToList() ?? []) @ratingCount</p>
+      </div>
+    </section>
+    @if (Model.SessionSettings?.DurationPrice != null)
+    {
+      <section class="duration-box">
+        <h3>Select session duration:</h3>
+        <div class="radio-group">
+@{
+  var first = true;
+  
+  var durationPriceDict = Model.SessionSettings?.DurationPrice;
+  var durationPrices = durationPriceDict?.OrderBy(kv => kv.Key) ?? Enumerable.Empty<KeyValuePair<int, double>>();
+}
+
+          @foreach (var duration in durationPrices )
+          {
+          <label>
+            <input type="radio" name="duration" data-price="@duration.Value"  value="@duration.Key" @(first ? "checked" : "")> @duration.Key Minutes
+          </label>
+          first = false;
+          }
+
+        </div>
+      </section>
+    }
+    <section class="booking-box">
+      
+      <form id="booking-form" method="post" asp-action="ReserveSession" asp-controller="Booking">
+        <input type="hidden" name="time" id="selectedTime" />
+        <input type="hidden" name="price" id="selectedPrice" />
+        <input type="hidden" name="doctorId" value="@Model.Id" />
+        <input type="hidden" name="duration" id="selectedDuration" />
+      </form>
+
+      
+      <button class="book-btn" disabled>Book Now 0 EGP</button>
+    </section>
+  </div>
+  @{
+      var availableDays = Model.SessionSettings?.AvailabilityTimes
+          .Select(a => a.Day)
+          .Distinct()
+          .ToList() ?? [];
+
+      var calendarDays = new List<DateTime>();
+      var currentDate = DateTime.Today;
+      
+      while (calendarDays.Count < 6)
+      {
+        var currentDayEnum = (DaysEnum)Enum.Parse(typeof(DaysEnum), currentDate.DayOfWeek.ToString());
+
+          if (availableDays.Contains(currentDayEnum))
+          {
+              calendarDays.Add(currentDate);
+          }
+
+          currentDate = currentDate.AddDays(1);
+
+          if (currentDate > DateTime.Today.AddDays(30)) break; 
+      }
+  }
+  @if (Model.SessionSettings?.IsAvailable ?? false)
+  {
+      <div class="right-panel">
+          <section class="slots-box">
+              <div class="calendar-head">
+                  <span style="text-align: center; width: 100%">
+                      @calendarDays.First().ToString("dd MMM yyyy") - @calendarDays.Last().ToString("dd MMM yyyy")
+                  </span>
+              </div>
+              <div class="slots d-flex justify-content-center">
+                @foreach (var day in calendarDays)
+                {
+                  <div class="day-column text-center mx-2" data-date="@day.ToString("yyyy-MM-dd")">
+                    <h4>@day.ToString("ddd dd")</h4>
+                  </div>
+                }
+              </div>
+          </section>
+      </div>
+  }
+  
+</div>
+
+<script>
+  const doctorId = '@Model.Id';
+
+  async function loadSlotsForDuration(selectedDuration) {
+    const calendarDays = [...document.querySelectorAll('.day-column')];
+
+    for (const column of calendarDays) {
+      const fullDate = column.getAttribute("data-date");
+
+      const res = await fetch('/api/Appointment/GetAvailableSlots', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          doctorId: doctorId,
+          date: fullDate,
+          duration: selectedDuration
+        })
+      });
+
+      const data = await res.json();
+
+      // Clear previous buttons
+      column.querySelectorAll('button.slot').forEach(b => b.remove());
+
+      data.forEach(slot => {
+        const btn = document.createElement("button");
+        btn.classList.add("slot");
+        btn.innerText = formatTime(slot.availableFrom);
+
+        btn.addEventListener("click", () => {
+          // Allow only one selected slot
+          document.querySelectorAll('.slot.selected').forEach(b => b.classList.remove('selected'));
+          btn.classList.add("selected");
+
+          // Update booking price
+          const selected = document.querySelector('input[name="duration"]:checked');
+          const price = selected ? parseFloat(selected.getAttribute('data-price')) : 0;
+
+          const bookBtn = document.querySelector('.book-btn');
+          bookBtn.innerText = `Book Now ${price} EGP`;
+          bookBtn.disabled = false;
+        });
+
+        column.appendChild(btn);
+      });
+    }
+  }
+
+  function formatTime(timeStr) {
+    const [hour, minute] = timeStr.split(':');
+    const hourNum = parseInt(hour);
+    const isPM = hourNum >= 12;
+    const hourFormatted = hourNum % 12 || 12;
+    return `${hourFormatted}:${minute} ${isPM ? 'PM' : 'AM'}`;
+  }
+
+  function convertTo24Hour(timeStr) {
+    const [time, period] = timeStr.split(' ');
+    let [hour, minute] = time.split(':').map(Number);
+
+    if (period === 'PM' && hour < 12) hour += 12;
+    if (period === 'AM' && hour === 12) hour = 0;
+
+    return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:00`;
+  }
+
+  function submitBooking() {
+    const selectedSlot = document.querySelector('.slot.selected');
+    const selectedDurationInput = document.querySelector('input[name="duration"]:checked');
+
+    if (!selectedSlot || !selectedDurationInput) {
+      alert("Please select both a duration and time slot.");
+      return;
+    }
+
+    const duration = parseInt(selectedDurationInput.value);
+    const price = parseFloat(selectedDurationInput.dataset.price);
+    const dateAttr = selectedSlot.closest('.day-column')?.getAttribute('data-date');
+    const timeStr = selectedSlot.innerText;
+    const time24 = convertTo24Hour(timeStr);
+    // Fill the hidden form
+    document.getElementById('selectedTime').value = `${dateAttr}T${time24}`;
+    document.getElementById('selectedPrice').value = price;
+    document.getElementById('selectedDuration').value = duration;
+
+    document.getElementById('booking-form').submit();
+  }
+
+  // Attach to "Book Now" button
+  document.querySelector('.book-btn').addEventListener('click', submitBooking);
+
+  // On duration change
+  document.querySelectorAll('input[name="duration"]').forEach(input => {
+    input.addEventListener('change', () => {
+      const selectedDuration = parseInt(input.value);
+      loadSlotsForDuration(selectedDuration);
+
+      // Reset selection and button
+      document.querySelectorAll('.slot.selected').forEach(b => b.classList.remove('selected'));
+      const bookBtn = document.querySelector('.book-btn');
+      bookBtn.innerText = 'Book Now 0 EGP';
+      bookBtn.disabled = true;
+    });
+  });
+
+  // Auto-trigger on page load for default duration
+  window.addEventListener("DOMContentLoaded", () => {
+    const defaultInput = document.querySelector('input[name="duration"]:checked');
+    if (defaultInput) {
+      loadSlotsForDuration(parseInt(defaultInput.value));
+    }
+  });
+</script>
+
+
+
+@functions
+{
+
+  private List<int> GetRatingValues(Rating rating)
+  {
+    return
+    [
+      (int)rating.Communication,
+      (int)rating.UnderstandingOfTheSituation,
+      (int)rating.ProvidingEffectiveSolution,
+      (int)rating.CommitmentToStartAndEndTimes
+    ];
+  }
+
+  private double CalculateAverageFromRatings(List<InnerPeace.Entities.Rating> ratings)
+  {
+    var allValues = ratings.SelectMany(GetRatingValues).ToList();
+    return allValues.Any() ? allValues.Average() : 0;
+  }
+
+  private string RenderStarsFromRatings(List<InnerPeace.Entities.Rating> ratings)
+  {
+    var avg = (int)Math.Round(CalculateAverageFromRatings(ratings));
+    return new string('★', avg).PadRight(5, '☆');
+  }
+    
+}

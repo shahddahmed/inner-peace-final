@@ -1,0 +1,48 @@
+﻿@model List<InnerPeace.Entities.Specialization>
+@{
+    ViewData["Title"] = "Find Therapist";
+}
+
+    <div class="container">
+        <h1>Get matched with a therapist</h1>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div id="progress"></div>
+            </div>
+        </div>
+
+        <h2 id="step-title">Step 1: Tell us what you're going through</h2>
+        
+        <div class="step active" data-step="1">
+            @foreach (var specialization in Model)
+            {
+                <button class="option-button" data-value="@specialization.Name">@specialization.Name</button>
+            }
+        </div>
+        
+        <div class="step" data-step="2">
+            <div class="options">
+                <button class="option-button" data-value="<1month">Less than a month</button>
+                <button class="option-button" data-value="1-6months">1-6 months</button>
+                <button class="option-button" data-value="6-12months">6-12 months</button>
+                <button class="option-button" data-value=">1year">More than a year</button>
+            </div>
+        </div>
+
+        <div class="step" data-step="3">
+            <div class="options">
+                <button class="option-button" data-value="male">Male</button>
+                <button class="option-button" data-value="female">Female</button>
+                <button class="option-button" data-value="anyone">Doesn't matter</button>
+            </div>
+        </div>
+
+
+        <div class="nav-buttons">
+            <button id="prevBtn" class="nav-button">Previous</button>
+            <button id="nextBtn" class="nav-button" disabled>Next</button>
+        </div>
+    </div>
+    
+    <script src="~/js/findTherapist.js"></script>

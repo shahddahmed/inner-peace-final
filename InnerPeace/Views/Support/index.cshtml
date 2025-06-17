@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Support";
+}
+<div class="support-container">
+    <div class="support-header">
+        <img src="/support.png" alt="Support Icon">
+        <h1>How can we help you?</h1>
+        <p class="subtitle">Choose your preferred way to get support</p>
+    </div>
+    
+    <div class="contact-options">
+        <div class="contact-card">
+            <div class="contact-icon">
+                <i class="fas fa-phone-alt"></i>
+            </div>
+            <h3 class="contact-title">Phone Support</h3>
+            <p class="contact-description">
+                Speak directly with our customer care team for immediate assistance.
+            </p>
+            <a href="tel:+01026212006" class="contact-btn">
+                Call Us
+            </a>
+        </div>
+
+        <div class="contact-card">
+            <div class="contact-icon">
+                <i class="fab fa-whatsapp"></i>
+            </div>
+            <h3 class="contact-title">WhatsApp</h3>
+            <p class="contact-description">
+                Message us on WhatsApp for quick responses to your questions.
+            </p>
+            <button class="contact-btn" onclick="openWhatsApp()">
+                Message on WhatsApp
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openWhatsApp() {
+      window.open('https://wa.me/1234567890', '_blank');
+    }
+</script>

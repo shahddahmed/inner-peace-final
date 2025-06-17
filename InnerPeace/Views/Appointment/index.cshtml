@@ -1,0 +1,343 @@
+﻿@model List<InnerPeace.Entities.Session>
+@{
+    ViewData["Title"] = "Appointment";
+    ViewData["Style"] = "appointment";
+
+    var currentSessions = Model.Where(session =>
+        {
+            var time = session.DateTime;
+            var duration = session.Duration.Duration;
+            var sessionEnd = time.AddMinutes(duration);
+            var now = DateTime.Now;
+
+            return !(now > sessionEnd);
+        })
+        .OrderByDescending(session =>
+        {
+            var time = session.DateTime;
+            var duration = session.Duration.Duration;
+            var sessionEnd = time.AddMinutes(duration);
+            var now = DateTime.Now;
+            
+            if (now >= time && now <= sessionEnd)
+                return 2;
+            return 1;
+        })
+        .ThenBy(session => session.DateTime)
+        .ToList();
+
+    var previousSessions = Model.Where(session =>
+    {
+        var time = session.DateTime;
+        var duration = session.Duration.Duration;
+        var sessionEnd = time.AddMinutes(duration);
+        var now = DateTime.Now;
+
+        return now > sessionEnd; // completed = previous
+    }).ToList();
+}
+
+<div class="appointments-tabs">
+    <button class="tab-btn active" data-tab="current">Current</button>
+    <button class="tab-btn" data-tab="previous">Previous</button>
+</div>
+
+<div id="currentSessions" class="appointments-list">
+    @foreach (var session in currentSessions)
+    {
+        var duration = session.Duration.Duration;
+        var time = session.DateTime;
+        var sessionEnd = time.AddMinutes(duration);
+        var now = DateTime.Now;
+
+        string status;
+        if (now >= time && now <= sessionEnd)
+        {
+            status = "Now";
+        }
+        else if (now > sessionEnd)
+        {
+            status = "Completed";
+        }
+        else
+        {
+            status = "Pending";
+        }
+
+        <div class="appointment-card" data-appointment-id="@session.Id" data-doctor-id="@session.DoctorId">
+            <div class="appointment-content"
+                 data-bs-toggle="modal" data-bs-target="#detailsModal"
+                 data-name="@session.Doctor.Name"
+                 data-title="@session.Doctor.ProfessionTitle"
+                 data-image="@session.Doctor.ImagePath"
+                 data-date="@time.ToString("yyyy-MM-dd")"
+                 data-time="@time.ToString("hh:mm tt")"
+                 data-duration="@duration"
+                 data-status="@status"
+                 data-prescription="@session.Prescription"
+                 data-notes="@session.Note">
+                <div class="therapist-info">
+                    <img src="@session.Doctor.ImagePath" alt="@session.Doctor.Name" class="therapist-image" />
+                    <div class="therapist-details">
+                        <h3>@session.Doctor.Name</h3>
+                        <p class="therapist-title">@session.Doctor.ProfessionTitle</p>
+                    </div>
+                    <span class="status-badge @status.ToLower()">
+                        @status
+                    </span>
+                </div>
+
+                <div class="appointment-time">
+                    <div class="time-item"><i class="far fa-calendar"></i> <span>@(time.Date.ToString("yyyy MM dd"))</span></div>
+                    <div class="time-item"><i class="far fa-clock"></i> <span>@(time.ToString("hh:mm tt"))</span></div>
+                    <div class="time-item"><i class="fas fa-hourglass-half"></i> <span>@duration Min</span></div>
+                </div>
+            </div>
+
+            <div class="appointment-actions">
+                @if (status == "Now")
+                {
+                    <button class="action-btn green"
+                            onclick="location.href='@session.ViewerUrl'">
+                        Now
+                    </button>
+                }
+                @if (status == "Completed")
+                {
+                    <button class="action-btn green"
+                            onclick="location.href='@Url.Action("Index", "Booking", new { id = session.DoctorId })'">
+                        Book Again
+                    </button>
+                }
+                @if (session.Rating is null && status == "Completed")
+                {
+                    <button class="action-btn" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                        Leave Review
+                    </button>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<div id="previousSessions" class="appointments-list" style="display:none;">
+    @foreach (var session in previousSessions)
+    {
+        var duration = session.Duration.Duration;
+        var time = session.DateTime;
+        var status = "Completed"; // previous are always completed
+
+        <div class="appointment-card" data-appointment-id="@session.Id" data-doctor-id="@session.DoctorId">
+            <div class="appointment-content"
+                 data-bs-toggle="modal" data-bs-target="#detailsModal"
+                 data-name="@session.Doctor.Name"
+                 data-title="@session.Doctor.ProfessionTitle"
+                 data-image="@session.Doctor.ImagePath"
+                 data-date="@time.ToString("yyyy-MM-dd")"
+                 data-time="@time.ToString("hh:mm tt")"
+                 data-duration="@duration"
+                 data-status="@status"
+                 data-prescription="@session.Prescription"
+                 data-notes="@session.Note">
+                <div class="therapist-info">
+                    <img src="@session.Doctor.ImagePath" alt="@session.Doctor.Name" class="therapist-image" />
+                    <div class="therapist-details">
+                        <h3>@session.Doctor.Name</h3>
+                        <p class="therapist-title">@session.Doctor.ProfessionTitle</p>
+                    </div>
+                    <span class="status-badge completed">
+                        @status
+                    </span>
+                </div>
+
+                <div class="appointment-time">
+                    <div class="time-item"><i class="far fa-calendar"></i> <span>@(time.Date.ToString("yyyy MM dd"))</span></div>
+                    <div class="time-item"><i class="far fa-clock"></i> <span>@(time.ToString("hh:mm tt"))</span></div>
+                    <div class="time-item"><i class="fas fa-hourglass-half"></i> <span>@duration Min</span></div>
+                </div>
+            </div>
+
+            <div class="appointment-actions">
+                <button class="action-btn green"
+                        onclick="location.href='@Url.Action("Index", "Booking", new { id = session.DoctorId })'">
+                    Book Again
+                </button>
+                @if (session.Rating is null)
+                {
+                    <button class="action-btn" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                        Leave Review
+                    </button>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@section BelowMain {
+    <!-- Review Modal -->
+    <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ModalLabel">Write a Review</h1>
+                    <button type="button" class="btn-close ms-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form class="review-form" id="reviewForm" method="post" asp-action="RateSession" asp-controller="Appointment">
+                    <div class="modal-body">
+                        <input type="hidden" name="sessionId" id="reviewSessionId" />
+                        <input type="hidden" name="doctorId" id="reviewDoctorId" />
+
+                        <input type="hidden" name="communication" id="ratingCommunication" />
+                        <input type="hidden" name="understandingOfTheSituation" id="ratingUnderstanding" />
+                        <input type="hidden" name="providingEffectiveSolution" id="ratingSolutions" />
+                        <input type="hidden" name="commitmentToStartAndEndTimes" id="ratingCommitment" />
+
+                        <div class="rating-group">
+                            <label>Communication</label>
+                            <div class="stars" data-rating="communication">
+                                @for (int i = 1; i <= 5; i++) { <span class="star" data-value="@i">★</span> }
+                            </div>
+                        </div>
+
+                        <div class="rating-group">
+                            <label>Understanding of the situation</label>
+                            <div class="stars" data-rating="understanding">
+                                @for (int i = 1; i <= 5; i++) { <span class="star" data-value="@i">★</span> }
+                            </div>
+                        </div>
+
+                        <div class="rating-group">
+                            <label>Providing effective solutions</label>
+                            <div class="stars" data-rating="solutions">
+                                @for (int i = 1; i <= 5; i++) { <span class="star" data-value="@i">★</span> }
+                            </div>
+                        </div>
+
+                        <div class="rating-group">
+                            <label>Commitment to session time</label>
+                            <div class="stars" data-rating="commitment">
+                                @for (int i = 1; i <= 5; i++) { <span class="star" data-value="@i">★</span> }
+                            </div>
+                        </div>
+
+                        <textarea name="comment" placeholder="Write your review here..." required></textarea>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="submit" class="action-btn green w-90">Submit Review</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Details Modal -->
+    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <button type="button" class="btn-close ms-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="details-content p-5">
+                    <div class="appointment-details">
+                        <img id="detailsImage" src="" alt="Doctor" class="therapist-image" />
+                        <h2 id="detailsName"></h2>
+                        <p><strong>Title:</strong> <span id="detailsTitle"></span></p>
+                        <p><strong>Date:</strong> <span id="detailsDate"></span></p>
+                        <p><strong>Time:</strong> <span id="detailsTime"></span></p>
+                        <p><strong>Duration:</strong> <span id="detailsDuration"></span> Min</p>
+                        <span class="status-badge" id="detailsStatus"></span>
+
+                        <div class="prescription-section">
+                            <h3>Medical Prescription</h3>
+                            <p id="detailsPrescription"></p>
+                        </div>
+                        <div class="notes-section">
+                            <h3>Notes</h3>
+                            <p id="detailsNotes"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tab button toggle logic
+            document.querySelectorAll('.tab-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const tab = button.dataset.tab;
+
+                    document.getElementById('previousSessions').style.display = (tab === 'previous') ? 'block' : 'none';
+                    document.getElementById('currentSessions').style.display = (tab === 'current') ? 'block' : 'none';
+
+                    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                });
+            });
+
+            // Star rating logic
+            function capitalize(str) {
+                return str.charAt(0).toUpperCase() + str.slice(1);
+            }
+
+            document.querySelectorAll('.stars').forEach(group => {
+                const ratingType = group.dataset.rating;
+                group.querySelectorAll('.star').forEach(star => {
+                    star.addEventListener('click', () => {
+                        const value = parseInt(star.dataset.value);
+                        const inputId = 'rating' + capitalize(ratingType);
+                        const input = document.getElementById(inputId);
+                        if (input) input.value = value;
+                        group.querySelectorAll('.star').forEach(s => {
+                            s.classList.toggle('active', parseInt(s.dataset.value) <= value);
+                        });
+                    });
+                });
+            });
+
+            // Reset review modal on close
+            document.getElementById('reviewModal')?.addEventListener('hidden.bs.modal', () => {
+                const form = document.getElementById('reviewForm');
+                if (form) {
+                    form.reset();
+                    document.querySelectorAll('.stars .star').forEach(s => s.classList.remove('active'));
+                    ['Communication', 'Understanding', 'Solutions', 'Commitment'].forEach(type => {
+                        const input = document.getElementById('rating' + type);
+                        if (input) input.value = '';
+                    });
+                }
+            });
+
+            // Fill review modal hidden inputs
+            document.querySelectorAll('[data-bs-target="#reviewModal"]').forEach(button => {
+                button.addEventListener('click', () => {
+                    const card = button.closest('[data-appointment-id]');
+                    if (card) {
+                        document.getElementById('reviewSessionId').value = card.dataset.appointmentId;
+                        document.getElementById('reviewDoctorId').value = card.dataset.doctorId;
+                    }
+                });
+            });
+
+            // Fill details modal content
+            document.querySelectorAll('[data-bs-target="#detailsModal"]').forEach(button => {
+                button.addEventListener('click', () => {
+                    const el = button;
+                    document.getElementById('detailsImage').src = el.dataset.image || '';
+                    document.getElementById('detailsName').textContent = el.dataset.name || '';
+                    document.getElementById('detailsTitle').textContent = el.dataset.title || '';
+                    document.getElementById('detailsDate').textContent = el.dataset.date || '';
+                    document.getElementById('detailsTime').textContent = el.dataset.time || '';
+                    document.getElementById('detailsDuration').textContent = el.dataset.duration || '';
+                    const status = el.dataset.status || '';
+                    const statusBadge = document.getElementById('detailsStatus');
+                    statusBadge.textContent = status;
+                    statusBadge.className = 'status-badge ' + (status.toLowerCase() === 'completed' ? 'completed' : 'pending');
+                    document.getElementById('detailsPrescription').textContent = el.dataset.prescription || 'N/A';
+                    document.getElementById('detailsNotes').textContent = el.dataset.notes || 'N/A';
+                });
+            });
+        });
+    </script>
+}
