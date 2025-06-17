@@ -16,10 +16,10 @@ public class DoctorScheduleController(ApplicationDbContext context) : Controller
         Guid.TryParse(doctorIdString, out Guid doctorId);
 
         var settings = (await context.Doctors.FirstOrDefaultAsync(d => d.Id == doctorId))?.SessionSettings ?? new();
-        
+
         return View(settings);
     }
-    
+
     [HttpPost("schedule-toggle")]
     public async Task<IActionResult> ChangeAvailability(bool isAvailable)
     {
@@ -31,14 +31,15 @@ public class DoctorScheduleController(ApplicationDbContext context) : Controller
         if (doctor == null)
             return NotFound();
 
-        doctor.SessionSettings ??= new ();
-            
+        doctor.SessionSettings ??= new();
+
         doctor.SessionSettings.IsAvailable = isAvailable;
-            
+
         await context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Index));
     }
+
     [HttpPost("schedule-time")]
     public async Task<IActionResult> AddAvailabilityTimes(DaysEnum day, TimeOnly startTime, TimeOnly endTime)
     {
@@ -50,29 +51,50 @@ public class DoctorScheduleController(ApplicationDbContext context) : Controller
         if (doctor == null)
             return NotFound();
 
-        doctor.SessionSettings ??= new ();
-            
+        doctor.SessionSettings ??= new DoctorSessionSettings();
+
+        // Ensure AvailabilityTimes is initialized as an empty list if it is null
+        doctor.SessionSettings.AvailabilityTimes ??= new List<AvailabilityTime>();
+
         doctor.SessionSettings.IsAvailable = true;
 
+        // Retrieve the existing availability time for the specified day or create a new one
         var time = doctor.SessionSettings.AvailabilityTimes.FirstOrDefault(s => s.Day == day);
-        time ??= new()
+
+        // If no existing availability time is found, create a new one
+        if (time == null)
         {
-            Day = day,
-            AvailabilityHours =
-            [
-                new()
+            time = new AvailabilityTime
+            {
+                Day = day,
+                AvailabilityHours = new List<AvailabilityHour>
+            {
+                new AvailabilityHour
                 {
                     AvailableFrom = startTime,
                     AvailableTo = endTime
                 }
-            ]
-        };
+            }
+            };
 
-        doctor.SessionSettings.AvailabilityTimes.RemoveAll(s => s.Day == day);
-        doctor.SessionSettings.AvailabilityTimes.Add(time);
-        
+            // Add the newly created availability time
+            doctor.SessionSettings.AvailabilityTimes.Add(time);
+        }
+        else
+        {
+            // If the availability time exists, update the existing availability hours
+            time?.AvailabilityHours?.Clear(); // Clear any existing availability hours
+            time?.AvailabilityHours?.Add(new AvailabilityHour
+            {
+                AvailableFrom = startTime,
+                AvailableTo = endTime
+            });
+        }
+
+        // Save changes to the database
         await context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Index));
     }
+
 }
