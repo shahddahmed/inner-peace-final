@@ -347,3 +347,4 @@ C:\Users\compumarts\Desktop\InnerPeace\InnerPeace\obj\Debug\net8.0\refint\InnerP
 C:\Users\compumarts\Desktop\InnerPeace\InnerPeace\obj\Debug\net8.0\InnerPeace.pdb
 C:\Users\compumarts\Desktop\InnerPeace\InnerPeace\obj\Debug\net8.0\InnerPeace.genruntimeconfig.cache
 C:\Users\compumarts\Desktop\InnerPeace\InnerPeace\obj\Debug\net8.0\ref\InnerPeace.dll
+C:\Users\compumarts\Desktop\InnerPeace\InnerPeace\obj\Debug\net8.0\InnerPeace.sourcelink.json

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "aBhA5Q0y01IJQxP6ottCvZCglz40FFY8fL1hgPFfwW8=",
+  "Hash": "OpJUl2dK4ITbkrBjMRhrp+FHWufp0/2gpUI5cT51i74=",
   "Source": "InnerPeace",
   "BasePath": "_content/InnerPeace",
   "Mode": "Default",
@@ -1611,6 +1611,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Profiles\\09d7261a-6e8d-46ea-8c19-420836a069e4.png"
+    },
+    {
+      "Identity": "C:\\Users\\compumarts\\Desktop\\InnerPeace\\InnerPeace\\wwwroot\\Profiles\\399c8d9f-7013-403a-afa9-02cc11be9e5e.webp",
+      "SourceId": "InnerPeace",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\compumarts\\Desktop\\InnerPeace\\InnerPeace\\wwwroot\\",
+      "BasePath": "_content/InnerPeace",
+      "RelativePath": "Profiles/399c8d9f-7013-403a-afa9-02cc11be9e5e.webp",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Profiles\\399c8d9f-7013-403a-afa9-02cc11be9e5e.webp"
     },
     {
       "Identity": "C:\\Users\\compumarts\\Desktop\\InnerPeace\\InnerPeace\\wwwroot\\Profiles\\6f4e4c66-dc52-42d3-8d00-b0a615b2fcf5.png",
